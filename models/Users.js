@@ -1,6 +1,18 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        requried: [true, "userSchema firstname is required"]
+    },
+    lastName: {
+        type: String,
+        requried: [true, "userSchema lastName is required"]
+    },
+    mobileNumber: {
+        type: Number,
+        requried: [true, "userSchema mobileNumber is required"]
+    },
     email: {
         type: String,
         required: [true, "userSchema email is required"]
@@ -11,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     isAdmin: {
         type: Boolean,
-        defualt: true
+        defualt: false
     }
 })
 
