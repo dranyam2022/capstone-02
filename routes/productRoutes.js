@@ -16,5 +16,13 @@ router.post("/create", auth.verify, async (request,response)=>{
     } catch (error) {console.log(error)}
 })
 
+//retrieve all active Products
+router.get("/all", async(request,response)=>{
+    try {
+       const result = await ProductController.getAllActive()
+       response.send(result)
+    } catch (error) {console.log(error)}
+})
+
 
 module.exports = router;

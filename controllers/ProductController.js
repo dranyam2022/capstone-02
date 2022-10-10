@@ -21,3 +21,9 @@ try {
 } catch (error) {console.log(error)}
 }
 
+//Get all active product
+module.exports.getAllActive = async ()=>{
+try {
+    const resultQuery = await Product.find({isActive: true})
+    return resultQuery   
+} catch (error) {console.log(error)}}
