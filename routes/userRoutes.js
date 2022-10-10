@@ -27,6 +27,7 @@ router.post("/login", async (request, response)=>{
 router.patch("/admin", auth.verify ,async (request, response) => {
   try {
     const data = {
+      //request.body should have email and password of the admin, and the email of the user that needs to be modified into an admin account
       user: request.body,
       isAdmin: auth.decode(request.headers.authorization).isAdmin
     }
