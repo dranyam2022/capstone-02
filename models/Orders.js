@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-    userId: {
-        type: ObjectId,
-        required: [true, "orderSchema userId should be associated to order"]
-    },
+    userId: mongoose.ObjectId,
     products: [
         {
             productId: String,
             quantity: Number
         }
     ],
-    totalAmount: Number,
+    totalAmount: {
+        type: Number,
+        required: [true, "orderSchema total amount is required"]
+    },
     purchasedOn: {
         type: Date,
         default: new Date()
