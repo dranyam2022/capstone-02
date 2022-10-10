@@ -14,6 +14,7 @@ router.post("/register", async (request, response) => {
   }
 });
 
+//login User
 router.post("/login", async (request, response)=>{
   try{
     const result = await UserController.login(request.body);
@@ -37,5 +38,12 @@ router.patch("/admin", auth.verify ,async (request, response) => {
     console.log(err);
   }
 });
+
+//retrieve user details
+router.get("/:userId", auth.verify, async(request,response)=>{
+  const result = await UserController.getUserDetails(request.params.userId)
+  response.send(result)
+})
+
 
 module.exports = router;

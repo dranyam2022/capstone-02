@@ -3,74 +3,101 @@ const bcrypt = require("bcrypt");
 const auth = require("../auth");
 const { validate } = require("../models/Users");
 
-
-
 //Register User Function
-module.exports.register = async (requestBody) =>{
-    try{
-    const  resultQuery = await User.findOne({"email": requestBody.email})
-    if(!resultQuery){
-        const encryptedPassword = bcrypt.hashSync(requestBody.password, 10);
-        let newUser = new User({
-            firstName: requestBody.firstName,
-            lastName: requestBody.lastName,
-            email: requestBody.email,
-            mobileNumber: requestBody.mobileNumber,
-            password: encryptedPassword
-        })
-        await newUser.save()
-        return {
-            message: "New User successfully registered"
-        }
-    }else{
-        return {
-            message: "Email already exist!"
-        }
+module.exports.register = async (requestBody) => {
+  try {
+    const resultQuery = await User.findOne({ email: requestBody.email });
+    if (!resultQuery) {
+      const encryptedPassword = bcrypt.hashSync(requestBody.password, 10);
+      let newUser = new User({
+        firstName: requestBody.firstName,
+        lastName: requestBody.lastName,
+        email: requestBody.email,
+        mobileNumber: requestBody.mobileNumber,
+        password: encryptedPassword,
+      });
+      await newUser.save();
+      return {
+        message: "New User successfully registered",
+      };
+    } else {
+      return {
+        message: "Email already exist!",
+      };
     }
-}
-catch(err){console.log(err)}}
-
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 //Login User Function
-module.exports.login = async (requestBody)=>{
-    try{
-        const resultQuery = await User.findOne({"email": requestBody.email})
-if(!resultQuery){
-    return {
-        message: "User doesn't exist!"
+module.exports.login = async (requestBody) => {
+  try {
+    const resultQuery = await User.findOne({ email: requestBody.email });
+    if (!resultQuery) {
+      return {
+        message: "User doesn't exist!",
+      };
+    } else {
+      const isPasswordCorrect = bcrypt.compareSync(
+        requestBody.password,
+        resultQuery.password
+      );
+      if (isPasswordCorrect) {
+        return {
+          access: auth.createAccessToken(resultQuery),
+        };
+      } else {
+        return {
+          message: "Password is incorrect!",
+        };
+      }
     }
-}else {
-    const isPasswordCorrect = bcrypt.compareSync(requestBody.password, resultQuery.password)
-    if (isPasswordCorrect) {
-        return {
-            access: auth.createAccessToken(resultQuery)
-        }
-    }else{
-        return {
-        message: "Password is incorrect!"
-    }}
-}
-    }catch(err){console.log(err)}
-}
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 //make admin account through patch
-module.exports.makeAdmin = async (data)=>{
-    try{
-        const resultQueryAdmin = await User.findOne({"email": data.user.email})
-        const isPasswordCorrect = bcrypt.compareSync(data.user.password, resultQueryAdmin.password)
-        if(isPasswordCorrect && data.isAdmin){
-        const resultQuery = await User.findOne({"email":data.user.makeAdmin});
-        if(resultQuery){
+module.exports.makeAdmin = async (data) => {
+  try {
+    const resultQueryAdmin = await User.findOne({ email: data.user.email });
+    const isPasswordCorrect = bcrypt.compareSync(
+      data.user.password,
+      resultQueryAdmin.password
+    );
+    if (isPasswordCorrect && data.isAdmin) {
+      const resultQuery = await User.findOne({ email: data.user.makeAdmin });
+      if (resultQuery) {
         resultQuery.isAdmin = true;
-        await resultQuery.save()
-        return `The User with email  ${resultQuery.email} is now an ADMIN`
-        }else{
-            return {
-                message: "User does not exist"
-            }
-        }}
-        return{
-            message: "You are not an admin"
-        }
-    }catch(err){console.log(err)}
-}
+        await resultQuery.save();
+        return `The User with email  ${resultQuery.email} is now an ADMIN`;
+      } else {
+        return {
+          message: "User does not exist",
+        };
+      }
+    }
+    return {
+      message: "You are not an admin",
+    };
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+//get user details
+module.exports.getUserDetails = async (id) => {
+  try {
+    const resultQuery = await User.findById(id);
+    if (resultQuery) {
+      return resultQuery;
+    } else {
+      return {
+        message: "User does not exist",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
