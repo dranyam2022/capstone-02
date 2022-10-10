@@ -27,3 +27,12 @@ try {
     const resultQuery = await Product.find({isActive: true})
     return resultQuery   
 } catch (error) {console.log(error)}}
+
+//get a singe product
+module.exports.getProduct = async (data)=>{
+    try {
+        const resultQuery = await Product.findById(data)
+        return resultQuery
+
+    } catch (error) {console.log(error)}
+}

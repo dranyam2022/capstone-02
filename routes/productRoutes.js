@@ -24,5 +24,14 @@ router.get("/all", async(request,response)=>{
     } catch (error) {console.log(error)}
 })
 
+//retrieve single product
+router.get("/:id", async (request, response)=>{
+    try {
+        const result = await ProductController.getProduct(request.params.id)
+        response.send(result)
+    } catch (error) {console.log(error)}
+})
+
+
 
 module.exports = router;
