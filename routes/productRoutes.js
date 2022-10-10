@@ -44,6 +44,15 @@ router.patch("/update/:id", auth.verify, async(request, response)=>{
     }catch(error){console.log(error)}
 })
 
-
+//archive a poduct (Admin Only)
+router.patch("/archive/:id", auth.verify, async(request, response)=>{
+    try{
+        const data = {
+        isAdmin: auth.decode(request.headers.authorization).isAdmin
+        }
+        const result = await ProductController.archiveProduct(request.params.id, data)
+        response.send(result)
+    }catch(error){console.log(error)}
+})
 
 module.exports = router;

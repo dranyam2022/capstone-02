@@ -54,8 +54,26 @@ module.exports.updateProduct = async (id, data) => {
       });
       return {
         resultQuery,
-        message: `Updated the Product ${resultQuery._id} succesfully`
-      }
+        message: `Updated the Product ${resultQuery._id} succesfully`,
+      };
+    } else {
+      return {
+        message: "You are not an Admin!",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//archive product
+module.exports.archiveProduct = async (id, data) => {
+  try {
+    if (data.isAdmin) {
+        const resultQuery = await Product.findByIdAndUpdate(id, {isActive: false})
+        return {
+            message: `Product ID:${id} is now on archives`
+        }
     } else {
       return {
         message: "You are not an Admin!",
