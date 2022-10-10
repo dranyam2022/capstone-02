@@ -32,6 +32,18 @@ router.get("/:id", async (request, response)=>{
     } catch (error) {console.log(error)}
 })
 
+//Update Product (Admin only)
+router.patch("/update/:id", auth.verify, async(request, response)=>{
+    try{
+        const data = {
+        product: request.body,
+        isAdmin: auth.decode(request.headers.authorization).isAdmin
+        }
+        const result = await ProductController.updateProduct(request.params.id, data)
+        response.send(result)
+    }catch(error){console.log(error)}
+})
+
 
 
 module.exports = router;
