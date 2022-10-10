@@ -1,6 +1,7 @@
 const User = require("../models/Users");
 const bcrypt = require("bcrypt");
 const auth = require("../auth");
+const { validate } = require("../models/Users");
 
 
 
@@ -55,10 +56,13 @@ if(!resultQuery){
 //make admin account through patch
 module.exports.makeAdmin = async (data)=>{
     try{
-        if(data.isAdmin){
+        const resultQueryAdmin = await User.findOne({"email": data.user.email})
+        const isPasswordCorrect = bcrypt.compareSync(data.user.password, resultQueryAdmin.password)
+        if(isPasswordCorrect && data.isAdmin){
         const resultQuery = await User.findOne({"email":data.user.makeAdmin});
         if(resultQuery){
         resultQuery.isAdmin = true;
+        await resultQuery.save()
         return `The User with email  ${resultQuery.email} is now an ADMIN`
         }else{
             return {
