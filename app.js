@@ -17,7 +17,7 @@ app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 
 app.listen(process.env.PORT || 3000, () => {
-    console.log(`Connected to localhost:${port}!`)
+    console.log(`Connected to localhost:${process.env.PORT || 3000}!`)
 })
 
 
