@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const dotenv = require("dotenv");
+const port = 3000;
 dotenv.config();
 
 app.use(cors());
@@ -16,8 +17,8 @@ app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 
-app.listen(process.env.PORT || 3000, () => {
-    console.log(`Connected to localhost:${process.env.PORT || 3000}!`)
+app.listen(process.env.PORT || port, () => {
+    console.log(`Connected to localhost:${process.env.PORT || port}!`)
 })
 
 

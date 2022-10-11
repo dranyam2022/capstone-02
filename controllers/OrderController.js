@@ -31,3 +31,11 @@ module.exports.createOrder = async (productId, data) => {
     console.log(error);
   }
 };
+
+//get user orders
+module.exports.getUserOrders = async (data) => {
+  try{
+    const resultQuery = await Order.find({userId:data})
+    return resultQuery
+  }catch(error){console.log(error)}
+}

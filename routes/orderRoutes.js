@@ -19,4 +19,10 @@ try{
 })
 
 
+//get authenticated users orders
+router.get("/:userid", auth.verify, async (request, response) =>{
+    const result = await OrderController.getUserOrders(request.params.userid)
+  response.send(result)
+  })
+
 module.exports = router;
