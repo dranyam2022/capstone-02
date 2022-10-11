@@ -22,13 +22,17 @@ app.listen(port, () => {
 })
 
 
-mongoose.connect(
-    process.env.MONGODB_URL, 
-    {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }
-);
+async function main(){
+   await mongoose.connect(
+        process.env.MONGODB_URL, 
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        }
+    );
+}
+
+main().catch(error=> console.log(error))
 
 let db = mongoose.connection;
 db.once("open", () => console.log("Connected to MongoDB"))
