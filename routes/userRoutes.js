@@ -45,5 +45,9 @@ router.get("/:userId", auth.verify, async(request,response)=>{
   response.send(result)
 })
 
-
+//get authenticated users orders
+router.get("/:id/orders", auth.verify, async (request, response) =>{
+  const result = await UserController.getUserOrders(request.params.id)
+response.send(result)
+})
 module.exports = router;
