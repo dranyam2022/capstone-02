@@ -16,7 +16,7 @@ app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Connected to localhost:${port}!`)
 })
 
