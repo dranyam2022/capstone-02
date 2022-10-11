@@ -25,4 +25,16 @@ router.get("/:userid", auth.verify, async (request, response) =>{
   response.send(result)
   })
 
+//retrieve all orders (Admin only)
+router.get("/all/admin", auth.verify, async (request, response) => {
+    try{
+      const data = {
+        isAdmin: auth.decode(request.headers.authorization).isAdmin
+      }
+      const result = await OrderController.getAllOrders(data)
+      response.send(result)
+    }catch(error){console.log(error)}
+    });
+
+
 module.exports = router;

@@ -1,5 +1,8 @@
+
 const Order = require("../models/Orders");
 const Product = require("../models/Products");
+
+//create order
 
 module.exports.createOrder = async (productId, data) => {
   try {
@@ -37,5 +40,19 @@ module.exports.getUserOrders = async (data) => {
   try{
     const resultQuery = await Order.find({userId:data})
     return resultQuery
+  }catch(error){console.log(error)}
+}
+
+//retrieve all orders (Admin only)
+module.exports.getAllOrders = async (data)=>{
+  try{
+    if(data.isAdmin){
+      const resultQuery = await Order.find({})
+    return resultQuery
+  }else{
+    return {
+      message: "You are not an Admin"
+    }
+  }
   }catch(error){console.log(error)}
 }

@@ -15,23 +15,23 @@ router.post("/register", async (request, response) => {
 });
 
 //login User
-router.post("/login", async (request, response)=>{
-  try{
+router.post("/login", async (request, response) => {
+  try {
     const result = await UserController.login(request.body);
     response.send(result);
-  }catch (err){
-    console.log(err)
+  } catch (err) {
+    console.log(err);
   }
-})
+});
 
 //make User as admin
-router.patch("/admin", auth.verify ,async (request, response) => {
+router.patch("/admin", auth.verify, async (request, response) => {
   try {
     const data = {
       //request.body should have email and password of the admin, and the email of the user that needs to be modified into an admin account
       user: request.body,
-      isAdmin: auth.decode(request.headers.authorization).isAdmin
-    }
+      isAdmin: auth.decode(request.headers.authorization).isAdmin,
+    };
     const result = await UserController.makeAdmin(data);
     response.send(result);
   } catch (err) {
@@ -40,11 +40,14 @@ router.patch("/admin", auth.verify ,async (request, response) => {
 });
 
 //retrieve user details
-router.get("/:userId", auth.verify, async(request,response)=>{
-  const result = await UserController.getUserDetails(request.params.userId)
-  response.send(result)
-})
-
+router.get("/:userId", auth.verify, async (request, response) => {
+  try {
+    const result = await UserController.getUserDetails(request.params.userId);
+    response.send(result);
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 
 
