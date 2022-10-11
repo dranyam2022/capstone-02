@@ -24,12 +24,13 @@ app.listen(port, () => {
 
 async function main(){
    await mongoose.connect(
-        process.env.MONGODB_URL, 
+    `mongodb+srv://dranyam123:${process.env.MONGODB_PASSWORD}@cluster0.r17kiq2.mongodb.net/caps2_ecom_api?retryWrites=true&w=majority`
+    , 
         {
             useNewUrlParser: true,
             useUnifiedTopology: true
         }
-    );
+    )
 }
 
 main().catch(error=> console.log(error))
